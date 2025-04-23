@@ -1,4 +1,4 @@
-# 🧠 Practical RAG Course: Building with LLaMA 3 and PostgreSQL
+# 🧠 Practical RAG Course: Building with LLaMA 3 and SQLite
 
 This repository contains all the code and materials for a two-day practical course on Retrieval-Augmented Generation (RAG) systems.
 
@@ -10,7 +10,7 @@ This hands-on course guides you through building, deploying, and using a complet
 
 - **LLM**: LLaMA 3 70B (via API)
 - **Embeddings**: transformers.js or tensorflow.js
-- **Database**: PostgreSQL with pgvector or MongoDB with vector search
+- **Database**: SQLite with sqlite-vec extension for vector operations
 - **Backend**: Node.js with Express.js
 - **Deployment**: Cloud run (Render/Railway/Clever Cloud) or Docker Compose
 
@@ -44,7 +44,7 @@ This hands-on course guides you through building, deploying, and using a complet
 ## 📁 Repository Structure
 
 - **`/rag-examples`**: Simple examples demonstrating core RAG concepts
-- **`/rag-steps`**: Step-by-step implementation of the complete RAG system
+- **`/step-00`** to **`/step-08`**: Step-by-step implementation of the complete RAG system
 - **`/server`**: Backend FastAPI server code
 - **`/database`**: Database setup and configuration
 - **`/data`**: Sample datasets for testing
@@ -55,8 +55,62 @@ This hands-on course guides you through building, deploying, and using a complet
 To begin the course:
 
 1. Clone this repository
-2. Follow the setup instructions in [Step 1](/rag-steps/step-01/README.md)
-3. Progress through each step in the `/rag-steps` directory
+2. Follow the setup instructions in [Step 1](/step-01/README.md)
+3. Progress through each step sequentially
+
+## 🗺️ Learning Path
+
+### Day 1 - From Docs to Answers
+
+#### 📌 Step 1: Project Setup
+- Setting up the Node.js development environment
+- Installing required npm dependencies
+- Configuring API access for LLaMA 3
+- Basic Express.js project structure
+
+#### 📌 Step 2: Document Ingestion
+- Loading documents from various sources (PDF, Markdown, web)
+- Text extraction techniques
+- Document metadata handling
+- Building a document pipeline
+
+#### 📌 Step 3: Chunking and Embedding
+- Text chunking strategies
+- Understanding token limits
+- Generating embeddings with transformers.js
+- Optimizing chunk size for retrieval
+
+#### 📌 Step 4: Vector Storage
+- Setting up SQLite with vector extensions
+- Creating vector database schema
+- Storing document chunks and embeddings
+- Basic vector operations
+
+#### 📌 Step 5: Retrieval Implementation
+- Semantic search with vector similarity
+- Top-k retrieval methods
+- Filtering and metadata-based search
+- Evaluating retrieval quality
+
+#### 📌 Step 6: LLM Integration
+- Connecting to LLaMA 3 API with Node.js
+- Building effective prompts
+- Context window management
+- Handling API responses with async/await
+
+### Day 2 - Polishing and Deployment
+
+#### 📌 Step 7: RAG Pipeline Optimization
+- Prompt engineering techniques
+- Hybrid retrieval (vector + keyword)
+- Re-ranking strategies
+- Handling edge cases and fallbacks
+
+#### 📌 Step 8: Deployment and Frontend
+- Deploying the Express.js backend
+- Containerization with Docker
+- Building a React or Vue.js frontend
+- End-to-end testing
 
 ## 📋 Prerequisites
 

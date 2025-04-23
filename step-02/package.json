@@ -1,13 +1,13 @@
 {
-  "name": "rag-step-04",
+  "name": "rag-step-02",
   "version": "1.0.0",
-  "description": "Vector database storage for RAG system",
+  "description": "Document ingestion for RAG system",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "node test_vectordb.js"
+    "test": "node test/run-tests.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

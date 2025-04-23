@@ -67,7 +67,7 @@ export function splitByCharacterCount(text, chunkSize = 1000, chunkOverlap = 200
  * @param {number} paragraphOverlap - Number of paragraphs to overlap between chunks
  * @returns {Array<string>} Array of text chunks
  */
-export function splitByParagraphs(text, maxParagraphsPerChunk = 3, paragraphOverlap = 1) {
+export function splitByParagraphs(text, maxParagraphsPerChunk = 5, paragraphOverlap = 1) {
   if (!text || typeof text !== 'string') {
     throw new Error('Invalid text input');
   }
@@ -75,16 +75,21 @@ export function splitByParagraphs(text, maxParagraphsPerChunk = 3, paragraphOver
   // Split text into paragraphs (double newlines or more)
   const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
   
+  // If we have fewer paragraphs than the max, just return the whole text
   if (paragraphs.length <= maxParagraphsPerChunk) {
     return [text];
   }
+  
+  // Validate parameters
+  const validMaxParagraphs = Math.max(1, maxParagraphsPerChunk);
+  const validOverlap = Math.min(Math.max(0, paragraphOverlap), validMaxParagraphs - 1);
   
   const chunks = [];
   let startIndex = 0;
   
   while (startIndex < paragraphs.length) {
     // Calculate end index for this chunk
-    const endIndex = Math.min(startIndex + maxParagraphsPerChunk, paragraphs.length);
+    const endIndex = Math.min(startIndex + validMaxParagraphs, paragraphs.length);
     
     // Extract the paragraphs for this chunk
     const chunkParagraphs = paragraphs.slice(startIndex, endIndex);
@@ -93,7 +98,10 @@ export function splitByParagraphs(text, maxParagraphsPerChunk = 3, paragraphOver
     chunks.push(chunkParagraphs.join('\n\n'));
     
     // Move to the next chunk, accounting for overlap
-    startIndex = endIndex - paragraphOverlap;
+    startIndex = Math.max(startIndex + 1, endIndex - validOverlap);
+    
+    // Ensure we're making progress
+    if (startIndex >= paragraphs.length) break;
   }
   
   return chunks;

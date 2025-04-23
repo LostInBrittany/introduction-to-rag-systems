@@ -20,7 +20,8 @@ function checkPackage(packageName) {
   try {
     // In ES modules, we can't use require.resolve directly
     // Instead, check if package.json exists in node_modules
-    const packagePath = path.join(__dirname, 'node_modules', packageName, 'package.json');
+    // Look in the parent directory's node_modules since we moved the test file to a subdirectory
+    const packagePath = path.join(__dirname, '..', 'node_modules', packageName, 'package.json');
     return fs.existsSync(packagePath);
   } catch (e) {
     return false;
@@ -42,7 +43,7 @@ function checkApiKey() {
  */
 async function testLlmApi() {
   try {
-    const { testLlmConnection } = await import('./utils/llm.js');
+    const { testLlmConnection } = await import('../utils/llm.js');
     return await testLlmConnection();
   } catch (error) {
     return { success: false, error: error.message };
@@ -55,7 +56,7 @@ async function testLlmApi() {
  */
 async function testEmbeddingModel() {
   try {
-    const { testEmbedding } = await import('./utils/embeddings.js');
+    const { testEmbedding } = await import('../utils/embeddings.js');
     return await testEmbedding();
   } catch (error) {
     return { success: false, message: error.message };
@@ -68,7 +69,7 @@ async function main() {
   // Check required packages
   const requiredPackages = [
     'express', 'dotenv', 'cors', 
-    '@xenova/transformers', 'pg', 'pgvector'
+    '@xenova/transformers', 'better-sqlite3', 'sqlite-vec'
   ];
   
   console.log('\n📦 Checking required packages:');
@@ -117,14 +118,20 @@ async function main() {
   
   // Overall status
   console.log('\n📋 Overall setup status:');
-  if (allPackagesInstalled && apiKeySet && (llmSuccess || !apiKeySet) && embeddingSuccess) {
+  const allTestsPassed = allPackagesInstalled && apiKeySet && (llmSuccess || !apiKeySet) && embeddingSuccess;
+  
+  if (allTestsPassed) {
     console.log('✅ Setup complete! Your environment is ready for RAG development.');
   } else {
     console.log('❌ Setup incomplete. Please address the issues above.');
   }
+  
+  // Exit with appropriate code
+  process.exit(allTestsPassed ? 0 : 1);
 }
 
 // Run the main function
 main().catch(error => {
   console.error('Error during setup test:', error);
+  process.exit(1);
 });

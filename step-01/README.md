@@ -28,7 +28,7 @@ We'll install the necessary npm packages for our RAG application:
 ```bash
 npm install express dotenv cors
 npm install @xenova/transformers
-npm install pg pgvector
+npm install better-sqlite3 sqlite-vec
 npm install --save-dev nodemon
 ```
 
@@ -47,7 +47,7 @@ LLAMA_API_KEY=your_api_key_here
 Run the provided test script to verify your environment is correctly set up:
 
 ```bash
-node test_setup.js
+node test/test_setup.js
 ```
 
 ## 📁 Project Structure
@@ -60,7 +60,8 @@ rag-app/
 ├── utils/
 │   ├── llm.js           # LLM API utilities
 │   └── embeddings.js    # Embedding utilities
-└── test_setup.js        # Setup verification script
+└── test/
+    └── test_setup.js    # Setup verification script
 ```
 
 ## 🧩 Core Components Explained
@@ -110,7 +111,7 @@ Defines project dependencies including:
 - `dotenv`: For loading environment variables
 - `cors`: Middleware for enabling CORS
 - `@xenova/transformers`: For handling embedding generation
-- `pg` and `pgvector`: For PostgreSQL database interaction
+- `better-sqlite3` and `sqlite-vec`: For SQLite database interaction with vector support
 
 ### app.js
 
@@ -133,7 +134,7 @@ Manages text embedding generation using transformers.js:
 - Provides functions to generate and test embeddings
 - Handles error cases gracefully
 
-### test_setup.js
+### test/test_setup.js
 
 Verifies that the environment is correctly set up by:
 - Checking for required packages
@@ -145,7 +146,7 @@ Verifies that the environment is correctly set up by:
 
 1. **API Key Setup**: Obtain an API key for LLaMA 3 and configure it in your `.env` file.
 
-2. **Environment Testing**: Run the `test_setup.js` script and fix any issues that arise.
+2. **Environment Testing**: Run the `test/test_setup.js` script and fix any issues that arise.
 
 3. **Express.js Exploration**: Start the Express.js server and access the `/health` endpoint in your browser or using a tool like curl or Postman.
 
@@ -170,7 +171,7 @@ Verifies that the environment is correctly set up by:
 
 - [Express.js Documentation](https://expressjs.com/)
 - [Transformers.js Documentation](https://huggingface.co/docs/transformers.js/index)
-- [pgvector Documentation](https://github.com/pgvector/pgvector)
+- [sqlite-vec Documentation](https://github.com/asg017/sqlite-vec)
 - [LLaMA 3 API Documentation](https://ai.meta.com/llama/) (Replace with actual API documentation)
 
 ## 🚀 Next Steps

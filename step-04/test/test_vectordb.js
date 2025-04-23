@@ -4,21 +4,21 @@
 
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { processDocument } from './utils/documentProcessor.js';
-import { chunkDocument } from './utils/documentChunker.js';
-import { getEmbedding } from './utils/embeddings.js';
+import { processDocument } from '../utils/documentProcessor.js';
+import { chunkDocument } from '../utils/documentChunker.js';
+import { getEmbedding } from '../utils/embeddings.js';
 import { 
   storeDocumentWithChunks, 
   findSimilarChunks,
   getAllDocuments,
   closeDatabase
-} from './utils/vectorStorage.js';
+} from '../utils/vectorStorage.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Test document path
-const MARKDOWN_FILE_PATH = path.join(__dirname, 'data/samples/sample.md');
+const MARKDOWN_FILE_PATH = path.join(__dirname, '../data/samples/sample.md');
 
 /**
  * Test storing a document in the vector database
@@ -86,8 +86,10 @@ async function testSearchSimilarChunks(query) {
     }
     
     console.log('\n✅ Vector search test completed successfully!');
+    return true;
   } catch (error) {
     console.error('❌ Vector search test failed:', error);
+    return false;
   }
 }
 
@@ -109,32 +111,43 @@ function testListDocuments() {
     }
     
     console.log('\n✅ Document listing test completed successfully!');
+    return true;
   } catch (error) {
     console.error('❌ Document listing test failed:', error);
+    return false;
   }
 }
 
 // Run the tests
 async function runTests() {
+  let success = true;
+  
   try {
     // Store a document
     await testStoreDocument();
     
     // List all documents
-    testListDocuments();
+    const listSuccess = testListDocuments();
+    if (!listSuccess) success = false;
     
     // Search for similar chunks
-    await testSearchSimilarChunks('markdown features');
+    const searchSuccess = await testSearchSimilarChunks('markdown features');
+    if (!searchSuccess) success = false;
     
     // Close database connection
     closeDatabase();
+    
+    // Exit with appropriate code
+    process.exit(success ? 0 : 1);
   } catch (error) {
     console.error('Error during vector database tests:', error);
     closeDatabase();
+    process.exit(1);
   }
 }
 
 runTests().catch(error => {
   console.error('Error during tests:', error);
   closeDatabase();
+  process.exit(1);
 });
