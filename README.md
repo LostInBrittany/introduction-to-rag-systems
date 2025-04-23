@@ -2,17 +2,21 @@
 
 This repository contains all the code and materials for a two-day practical course on Retrieval-Augmented Generation (RAG) systems.
 
+## For CESI DIA2 students
+
+You will find in your Discord the parameters to connect to a LLM, a LLaMA 3 70B hosted on OVHcloud AI Endpoints. Use these parameters to configure your environment for this course.
+
 ## 📚 Course Overview
 
 This hands-on course guides you through building, deploying, and using a complete RAG system from scratch. By the end of the two days, you'll have created a fully functional RAG application that can answer questions based on your own documents.
 
 ## 🔧 Tech Stack
 
-- **LLM**: LLaMA 3 70B (via API)
+- **LLM**: Any LLM (local or cloud-based) offering OpenAI API compatibility
 - **Embeddings**: transformers.js or tensorflow.js
 - **Database**: SQLite with sqlite-vec extension for vector operations
 - **Backend**: Node.js with Express.js
-- **Deployment**: Cloud run (Render/Railway/Clever Cloud) or Docker Compose
+- **Deployment**: Any cloud provider (e.g., Clever Cloud) or Docker Compose
 
 ## 📅 Course Schedule
 
