@@ -20,6 +20,7 @@ After ingesting documents in Step 2, we need to:
 
 *Figure: Vector DB creation pipeline showing the flow from raw documents to processed text, then chunking and embedding. (Source: [Anyscale – Building RAG-based LLM Applications](https://www.anyscale.com/blog/a-comprehensive-guide-for-building-rag-based-llm-applications-part-1))*
 
+
 ## 🧩 Why Chunking Matters
 
 Chunking is a critical step in the RAG pipeline for several reasons:
