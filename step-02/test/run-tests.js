@@ -1,78 +1,63 @@
 /**
  * Test runner for step-02
- * Runs tests from step-01 and step-02 in order
+ * Runs all test files in sequence
  */
 
 import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
-import { dirname, join, resolve } from 'path';
+import { dirname, join } from 'path';
 
 // Get current directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const STEP_DIR = dirname(__dirname);
-const PROJECT_ROOT = resolve(STEP_DIR, '..');
 
-/**
- * Run a test script and return a promise that resolves when the script completes
- * @param {string} scriptPath - Path to the test script
- * @param {string} description - Description of the test
- * @returns {Promise<boolean>} - Promise that resolves to true if the test passed, false otherwise
- */
-function runTest(scriptPath, description) {
-  return new Promise((resolve) => {
-    console.log(`\n🧪 Running ${description}: ${scriptPath}`);
-    console.log('='.repeat(50));
+// Define all test files to run in sequence
+const testFiles = [
+  'test_setup.js',
+  'test_embedding.js',
+  'test_api.js',
+  'test_direct.js',
+  'test_ingest.js'
+];
+
+// Run tests sequentially
+async function runTests() {
+  console.log('🧪 Running all tests for step-02...');
+  
+  for (const testFile of testFiles) {
+    const fullPath = join(__dirname, testFile);
+    console.log(`\n🧪 Running test: ${testFile}`);
     
-    exec(`node ${scriptPath}`, (error, stdout, stderr) => {
+    try {
+      // Execute the test and wait for it to complete
+      const { stdout, stderr } = await new Promise((resolve, reject) => {
+        exec(`node ${fullPath}`, (error, stdout, stderr) => {
+          if (error) {
+            reject({ error, stdout, stderr });
+          } else {
+            resolve({ stdout, stderr });
+          }
+        });
+      });
+      
       if (stdout) console.log(stdout);
       if (stderr) console.error(stderr);
       
-      const passed = !error;
-      console.log('='.repeat(50));
-      console.log(`${passed ? '✅' : '❌'} ${description} ${passed ? 'PASSED' : 'FAILED'}`);
-      resolve(passed);
-    });
-  });
-}
-
-/**
- * Run all tests in sequence
- */
-async function runAllTests() {
-  console.log('🧪 Running all tests for step-02\n');
-  
-  const tests = [
-    // Step 1 test
-    {
-      path: join(PROJECT_ROOT, 'step-01', 'test', 'test_setup.js'),
-      description: 'Step 1 - Environment Setup Test'
-    },
-    // Step 2 tests
-    {
-      path: join(__dirname, 'test_setup.js'),
-      description: 'Step 2 - Environment Setup Test'
-    },
-    {
-      path: join(__dirname, 'test_ingest.js'),
-      description: 'Step 2 - Document Ingestion Test'
-    }
-  ];
-  
-  let allPassed = true;
-  
-  for (const test of tests) {
-    const passed = await runTest(test.path, test.description);
-    if (!passed) {
-      allPassed = false;
+      console.log(`✅ Test ${testFile} completed successfully`);
+    } catch ({ error, stdout, stderr }) {
+      if (stdout) console.log(stdout);
+      if (stderr) console.error(stderr);
+      
+      console.error(`❌ Test ${testFile} failed with error: ${error.message}`);
+      process.exit(1);
     }
   }
   
-  console.log(`\n${allPassed ? '✅' : '❌'} All tests ${allPassed ? 'PASSED' : 'FAILED'}`);
-  process.exit(allPassed ? 0 : 1);
+  console.log('\n✅ All tests completed successfully');
+  process.exit(0);
 }
 
-runAllTests().catch(error => {
-  console.error('Error running tests:', error);
+runTests().catch(error => {
+  console.error(`❌ Unexpected error running tests: ${error.message}`);
   process.exit(1);
 });

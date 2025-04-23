@@ -4,16 +4,16 @@
 
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { processDocument } from './utils/documentProcessor.js';
-import { chunkDocument } from './utils/documentChunker.js';
-import { splitByCharacterCount, splitByParagraphs } from './utils/chunking/simpleChunker.js';
-import { splitRecursively, splitByHeadings } from './utils/chunking/recursiveChunker.js';
+import { processDocument } from '../utils/documentProcessor.js';
+import { chunkDocument } from '../utils/documentChunker.js';
+import { splitByCharacterCount, splitByParagraphs } from '../utils/chunking/simpleChunker.js';
+import { splitRecursively, splitByHeadings } from '../utils/chunking/recursiveChunker.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Test document path
-const MARKDOWN_FILE_PATH = path.join(__dirname, 'data/samples/sample.md');
+const MARKDOWN_FILE_PATH = path.join(__dirname, '../data/samples/sample.md');
 
 /**
  * Test different chunking strategies
@@ -35,7 +35,8 @@ async function testChunkingStrategies() {
     
     // Test paragraph-based chunking
     console.log('\n📋 Testing paragraph-based chunking:');
-    const paragraphChunks = splitByParagraphs(document.text, 2, 1);
+    // Using safer parameters: maxParagraphsPerChunk=3, paragraphOverlap=1
+    const paragraphChunks = splitByParagraphs(document.text, 3, 1);
     console.log(`Created ${paragraphChunks.length} paragraph-based chunks`);
     console.log('First chunk:', paragraphChunks[0]);
     
@@ -52,8 +53,10 @@ async function testChunkingStrategies() {
     console.log('First chunk:', headingChunks[0]);
     
     console.log('\n✅ Chunking strategies test completed successfully!');
+    return true;
   } catch (error) {
     console.error('❌ Chunking strategies test failed:', error);
+    return false;
   }
 }
 
@@ -81,17 +84,23 @@ async function testChunkingWithEmbeddings() {
       characterChunksWithEmbeddings[0].embedding.slice(0, 5));
     
     console.log('\n✅ Chunking with embeddings test completed successfully!');
+    return true;
   } catch (error) {
     console.error('❌ Chunking with embeddings test failed:', error);
+    return false;
   }
 }
 
 // Run the tests
 async function runTests() {
-  await testChunkingStrategies();
-  await testChunkingWithEmbeddings();
+  const strategiesSuccess = await testChunkingStrategies();
+  const embeddingsSuccess = await testChunkingWithEmbeddings();
+  
+  // Exit with appropriate code
+  process.exit(strategiesSuccess && embeddingsSuccess ? 0 : 1);
 }
 
 runTests().catch(error => {
   console.error('Error during chunking tests:', error);
+  process.exit(1);
 });

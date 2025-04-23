@@ -6,7 +6,7 @@
  */
 
 // Import the embedding utility
-import { getEmbedding } from './utils/embeddings.js';
+import { getEmbedding } from '../utils/embeddings.js';
 
 /**
  * Calculate cosine similarity between two vectors
@@ -114,6 +114,10 @@ async function main() {
 }
 
 // Run the main function
-main().catch(error => {
-  console.error('Error in embedding experiment:', error);
+main().then(() => {
+  console.log('\n✅ Embedding test completed successfully!');
+  process.exit(0);
+}).catch(error => {
+  console.error('\n❌ Error in embedding experiment:', error);
+  process.exit(1);
 });
