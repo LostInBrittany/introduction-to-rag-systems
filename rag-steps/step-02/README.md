@@ -8,17 +8,58 @@ In this step, we'll build the document ingestion pipeline for our RAG system. Th
 - Extract and clean text from documents
 - Prepare documents for chunking and embedding
 
-## 🔄 Document Ingestion Overview
+## 🔄 Vector DB Creation Pipeline
 
-Document ingestion is the process of:
-1. Loading documents from various sources
-2. Extracting text and metadata
-3. Cleaning and preprocessing the text
-4. Preparing the documents for chunking and embedding
+Before diving into document ingestion, it's important to understand how it fits into the broader Vector DB creation pipeline:
 
-![Document Ingestion Pipeline](https://images.ctfassets.net/xjan103pcp94/5Ik8r4YcYzGpV5aGKSZQZl/2e0d5b47a77b5e0d83d0f5a1efe7d656/image2.png)
+![Vector DB creation pipeline](https://images.ctfassets.net/xjan103pcp94/3q5HUANQ4kS0V23cgEP0JF/ef3b62c5bc5c5c11b734fd3b73f6ea28/image3.png)
 
-*Figure: Document ingestion pipeline showing the flow from raw documents to processed text ready for chunking and embedding. (Source: [Anyscale – Building RAG-based LLM Applications](https://www.anyscale.com/blog/a-comprehensive-guide-for-building-rag-based-llm-applications-part-1))*
+*Figure: Vector DB creation pipeline showing the flow from raw documents to processed text, then chunking and embedding. (Source: [Anyscale – Building RAG-based LLM Applications](https://www.anyscale.com/blog/a-comprehensive-guide-for-building-rag-based-llm-applications-part-1))*
+
+The complete Vector DB creation pipeline consists of several stages:
+
+1. **Document Ingestion** (our focus in this step)
+   - Loading documents from various sources
+   - Extracting text and metadata
+   - Cleaning and preprocessing the text
+
+2. **Document Chunking** (coming in Step 3)
+   - Splitting documents into smaller, manageable chunks
+   - Implementing different chunking strategies (fixed size, semantic, etc.)
+   - Preserving context and metadata during chunking
+
+3. **Embedding Generation** (coming in Step 3)
+   - Converting text chunks into vector embeddings
+   - Using embedding models to capture semantic meaning
+   - Optimizing embedding quality and performance
+
+4. **Vector Database Storage** (coming in Step 4)
+   - Storing embeddings in a vector database
+   - Implementing efficient indexing for similarity search
+   - Managing metadata alongside embeddings
+
+## 🔄 Document Ingestion Deep Dive
+
+In this step, we focus specifically on the document ingestion phase, which is the foundation of the entire Vector DB creation pipeline. Document ingestion involves:
+
+1. **Loading documents from various sources**
+   - Text files (.txt)
+   - Markdown files (.md)
+   - PDF documents (.pdf)
+   - (Extensible to other formats like HTML, DOCX, etc.)
+
+2. **Extracting text and metadata**
+   - Parsing document content
+   - Identifying document structure
+   - Extracting useful metadata (title, author, creation date, etc.)
+
+3. **Cleaning and preprocessing text**
+   - Removing excessive whitespace
+   - Handling special characters
+   - Normalizing text format
+   - Preparing text for further processing
+
+Effective document ingestion ensures that the downstream processes (chunking, embedding, and storage) have high-quality, well-structured data to work with. Poor document ingestion can lead to low-quality embeddings and ultimately affect the performance of the entire RAG system.
 
 ## 📋 Prerequisites
 
