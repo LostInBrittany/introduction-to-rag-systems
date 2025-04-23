@@ -1,4 +1,6 @@
-# 🧠 Practical RAG Course: Building with LLaMA 3 and SQLite
+# 🧠 Practical RAG Course
+
+*Building with any LLM (or SLM) and SQLite with vector extension*
 
 This repository contains all the code and materials for a two-day practical course on Retrieval-Augmented Generation (RAG) systems.
 

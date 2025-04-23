@@ -21,11 +21,26 @@ A complete RAG pipeline consists of three main components:
 
 *Figure: The basic RAG pipeline showing retrieval, augmentation, and generation steps*
 
+## Retrieval
+
+The retrieval component is a critical part of any RAG system. It's responsible for finding the most relevant document chunks from our vector database that match the user's query. For this, we need two key functions that we'll implement in `utils/retrieval.js`:
+
+1. A vector similarity function to measure how similar two embeddings are
+2. A top-K retrieval function to select the most relevant chunks
+
 ### Vector Similarity Search
 
-For the retrieval component, we'll use cosine similarity to find the most relevant chunks. Cosine similarity measures the angle between two vectors, focusing on their direction rather than magnitude:
+For measuring similarity between vectors, we'll implement the cosine similarity function. Cosine similarity measures the angle between two vectors, focusing on their direction rather than magnitude. This makes it ideal for comparing embeddings where the relative relationships between dimensions are more important than their absolute values.
+
+In `utils/retrieval.js`, we'll implement this function:
 
 ```javascript
+/**
+ * Calculate cosine similarity between two vectors
+ * @param {Array<number>} vectorA - First vector
+ * @param {Array<number>} vectorB - Second vector
+ * @returns {number} Cosine similarity (between -1 and 1)
+ */
 function cosineSimilarity(vectorA, vectorB) {
   let dotProduct = 0;
   let normA = 0;
@@ -41,13 +56,13 @@ function cosineSimilarity(vectorA, vectorB) {
 }
 ```
 
-## 🔝 Simple Top-K Retrieval
+### 🔝 Simple Top-K Retrieval
 
-For our RAG pipeline, we'll implement a straightforward top-K retrieval function that:
+Once we have a way to measure similarity, we need a function to retrieve the K most similar chunks to our query. This top-K retrieval function will also be implemented in `utils/retrieval.js` and will:
 
-1. Takes a query embedding as input
-2. Compares it to all chunk embeddings in our database using cosine similarity
-3. Returns the K most similar chunks
+1. Take a query embedding as input
+2. Compare it to all chunk embeddings in our database using cosine similarity
+3. Return the K most similar chunks
 
 ```javascript
 /**
@@ -134,7 +149,72 @@ Once we've retrieved the most relevant chunks, we need to:
 2. Create a prompt that includes both the context and the user's question
 3. Send this prompt to the LLM for generation
 
+### LLM Integration
+
+For LLM integration, we use the `utils/llm.js` file which provides functions for connecting to and interacting with the LLM API. This module includes:
+
+1. **Connection Testing**: A function to test the connection to the LLM API
+2. **Response Generation**: Functions to generate responses from the LLM
+
+The key function we'll use in our RAG pipeline is `generateLlmResponse`, which takes a prompt and options object:
+
 ```javascript
+// From utils/llm.js
+
+/**
+ * Generate a response from the LLM
+ * @param {string} prompt - The prompt to send to the LLM
+ * @param {Object} options - Additional options for the LLM
+ * @returns {Promise<string>} The LLM's response
+ */
+async function generateLlmResponse(prompt, options = {}) {
+  if (!LLM_API_KEY) {
+    throw new Error('LLM_API_KEY is not set in environment variables');
+  }
+
+  try {
+    const response = await fetch(LLM_API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${LLM_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: options.model || LLM_MODEL,
+        messages: [
+          {
+            role: 'system',
+            content: options.systemPrompt || 'You are a helpful assistant that answers questions based on the provided context.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: options.temperature || 0.7,
+        max_tokens: options.maxTokens || 500
+      })
+    });
+
+    // Process response and return content
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error('Error generating LLM response:', error);
+    throw new Error(`Failed to generate LLM response: ${error.message}`);
+  }
+}
+```
+
+This function provides a flexible interface for interacting with the LLM, allowing us to customize various parameters like the system prompt, temperature, and token limit through the options object.
+
+### Prompt Building
+
+The prompt building functionality is implemented in `utils/promptBuilder.js`, which creates a prompt that includes both the retrieved context and the user's question. This prompt is then sent to the LLM for generation.
+
+```javascript
+// From utils/promptBuilder.js
+
 /**
  * Create a RAG prompt by combining retrieved chunks with the user's question
  * @param {Array<Object>} chunks - Retrieved chunks with their text and metadata
@@ -159,11 +239,23 @@ export function createRagPrompt(chunks, question) {
 
 This simple prompt template instructs the LLM to answer the question based only on the provided context.
 
+### Consolidating LLM Functionality
+
+Our LLM integration is designed to be flexible and reusable. The `utils/llm.js` module provides multiple functions for different use cases:
+
+1. **testLlmConnection()**: For testing connectivity to the LLM API
+2. **generateResponse(prompt, context, maxTokens)**: A simpler function for basic LLM interactions
+3. **generateLlmResponse(prompt, options)**: A more flexible function with comprehensive options support
+
+By consolidating these functions in a single module, we ensure consistent error handling, environment variable usage, and API interaction patterns across our application. The RAG pipeline specifically uses the `generateLlmResponse` function because it offers the flexibility needed for advanced prompt engineering and parameter tuning.
+
 ## 🔧 Building the Complete RAG Pipeline
 
-Now we'll combine all components into a complete RAG pipeline:
+Now we'll combine all components into a complete RAG pipeline in `utils/ragPipeline.js`. This file will integrate the retrieval, augmentation, and generation steps into a single process:
 
 ```javascript
+// From utils/ragPipeline.js
+
 /**
  * Process a user query through the RAG pipeline
  * @param {string} query - The user's question
@@ -238,13 +330,13 @@ npm install
 2. Create a `.env` file with your API keys (if you haven't already):
 ```
 # LLaMA API Endpoint
-LLAMA_API_ENDPOINT=https://llama-3-1-70b-instruct.endpoints.kepler.ai.cloud.ovh.net/api/openai_compat/v1/chat/completions
+LLM_API_ENDPOINT=https://llama-3-1-70b-instruct.endpoints.kepler.ai.cloud.ovh.net/api/openai_compat/v1/chat/completions
 
 # LLaMA Model Name
-LLAMA_MODEL=Meta-Llama-3_1-70B-Instruct
+LLM_MODEL=Meta-Llama-3_1-70B-Instruct
 
 # LLaMA API Key
-LLAMA_API_KEY=your_api_key_here
+LLM_API_KEY=your_api_key_here
 ```
 
 3. Start the server:

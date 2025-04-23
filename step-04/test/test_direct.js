@@ -11,9 +11,9 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '..', '.env') });
 
 // Use environment variables or fallback values
-const apiEndpoint = process.env.LLAMA_API_ENDPOINT || 'https://training.ai.cloud.ovh.net/v1/chat/completions';
-const apiKey = process.env.LLAMA_API_KEY || process.argv[2] || 'YOUR_API_KEY_HERE';
-const model = process.env.LLAMA_MODEL || 'llama-3-70b-chat';
+const apiEndpoint = process.env.LLM_API_ENDPOINT || 'https://training.ai.cloud.ovh.net/v1/chat/completions';
+const apiKey = process.env.LLM_API_KEY || process.argv[2] || 'YOUR_API_KEY_HERE';
+const model = process.env.LLM_MODEL || 'llama-3-70b-chat';
 
 console.log(`Testing API endpoint directly: ${apiEndpoint}`);
 

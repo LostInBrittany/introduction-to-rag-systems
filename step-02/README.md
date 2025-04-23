@@ -407,8 +407,8 @@ import ingestRoutes from './routes/ingest.js';
 dotenv.config();
 
 // Verify API key is available
-if (!process.env.LLAMA_API_KEY) {
-  console.warn('LLAMA_API_KEY not found in environment variables');
+if (!process.env.LLM_API_KEY) {
+  console.warn('LLM_API_KEY not found in environment variables');
 }
 
 // Create Express app

@@ -9,9 +9,9 @@ const __dirname = dirname(__filename);
 // Load .env from the step directory (parent of test directory)
 dotenv.config({ path: join(__dirname, '..', '.env') });
 
-const apiEndpoint = process.env.LLAMA_API_ENDPOINT;
-const apiKey = process.env.LLAMA_API_KEY;
-const model = process.env.LLAMA_MODEL || 'llama-3-70b-chat';
+const apiEndpoint = process.env.LLM_API_ENDPOINT;
+const apiKey = process.env.LLM_API_KEY;
+const model = process.env.LLM_MODEL || 'llama-3-70b-chat';
 
 console.log(`Testing API endpoint: ${apiEndpoint}`);
 

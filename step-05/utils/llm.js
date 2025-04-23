@@ -3,49 +3,68 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-const LLAMA_API_KEY = process.env.LLAMA_API_KEY;
-const LLAMA_API_URL = process.env.LLAMA_API_ENDPOINT;
-const LLAMA_MODEL = process.env.LLAMA_MODEL;
+const LLM_API_KEY = process.env.LLM_API_KEY;
+const LLM_API_ENDPOINT = process.env.LLM_API_ENDPOINT;
+const LLM_MODEL = process.env.LLM_MODEL || 'Meta-Llama-3_1-70B-Instruct';
 
 /**
- * Test connection to LLaMA API
+ * Test the LLM API connection
  * @returns {Promise<Object>} Result of the test
  */
 async function testLlmConnection() {
-  const headers = {
-    'Authorization': `Bearer ${LLAMA_API_KEY}`,
-    'Content-Type': 'application/json'
-  };
-  
-  // Create the request data
-  const data = {
-    messages: [{ role: 'user', content: 'Hello, are you working?' }],
-    max_tokens: 50,
-    temperature: 0.7
-  };
-  
-  // Add model if specified in environment variables
-  if (LLAMA_MODEL) {
-    data.model = LLAMA_MODEL;
+  if (!LLM_API_KEY) {
+    return { 
+      success: false, 
+      message: 'LLM_API_KEY is not set in environment variables' 
+    };
   }
-  
-  // Make the API request
-  
+
   try {
-    const response = await fetch(LLAMA_API_URL, {
+    const response = await fetch(LLM_API_ENDPOINT, {
       method: 'POST',
-      headers,
-      body: JSON.stringify(data)
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${LLM_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: LLM_MODEL,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.'
+          },
+          {
+            role: 'user',
+            content: 'Hello, are you working?'
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 50
+      })
     });
-    
+
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const errorData = await response.json();
+      return { 
+        success: false, 
+        message: `API error: ${response.status} ${response.statusText}`,
+        details: errorData
+      };
     }
-    
-    const responseData = await response.json();
-    return { success: true, data: responseData };
+
+    const data = await response.json();
+    return { 
+      success: true, 
+      message: 'LLM API connection successful',
+      data: data
+    };
   } catch (error) {
-    return { success: false, error: error.message, url: LLAMA_API_URL };
+    return { 
+      success: false, 
+      message: `Connection error: ${error.message}`,
+      error: error,
+      endpoint: LLM_API_ENDPOINT
+    };
   }
 }
 
@@ -58,7 +77,7 @@ async function testLlmConnection() {
  */
 async function generateResponse(prompt, context = null, maxTokens = 1024) {
   const headers = {
-    'Authorization': `Bearer ${LLAMA_API_KEY}`,
+    'Authorization': `Bearer ${LLM_API_KEY}`,
     'Content-Type': 'application/json'
   };
   
@@ -87,7 +106,7 @@ async function generateResponse(prompt, context = null, maxTokens = 1024) {
   };
   
   try {
-    const response = await fetch(LLAMA_API_URL, {
+    const response = await fetch(LLM_API_URL, {
       method: 'POST',
       headers,
       body: JSON.stringify(data)
@@ -104,4 +123,52 @@ async function generateResponse(prompt, context = null, maxTokens = 1024) {
   }
 }
 
-export { testLlmConnection, generateResponse };
+/**
+ * Generate a response from the LLM
+ * @param {string} prompt - The prompt to send to the LLM
+ * @param {Object} options - Additional options for the LLM
+ * @returns {Promise<string>} The LLM's response
+ */
+async function generateLlmResponse(prompt, options = {}) {
+  if (!LLM_API_KEY) {
+    throw new Error('LLM_API_KEY is not set in environment variables');
+  }
+
+  try {
+    const response = await fetch(LLM_API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${LLM_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: options.model || LLM_MODEL,
+        messages: [
+          {
+            role: 'system',
+            content: options.systemPrompt || 'You are a helpful assistant that answers questions based on the provided context.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: options.temperature || 0.7,
+        max_tokens: options.maxTokens || 500
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`LLM API error: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error('Error generating LLM response:', error);
+    throw new Error(`Failed to generate LLM response: ${error.message}`);
+  }
+}
+
+export { testLlmConnection, generateResponse, generateLlmResponse };

@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-const LLAMA_API_KEY = process.env.LLAMA_API_KEY;
-const LLAMA_API_URL = process.env.LLAMA_API_ENDPOINT;
-const LLAMA_MODEL = process.env.LLAMA_MODEL;
+const LLM_API_KEY = process.env.LLM_API_KEY;
+const LLM_API_URL = process.env.LLM_API_ENDPOINT;
+const LLM_MODEL = process.env.LLM_MODEL;
 
 /**
  * Test connection to LLaMA API
@@ -13,7 +13,7 @@ const LLAMA_MODEL = process.env.LLAMA_MODEL;
  */
 async function testLlmConnection() {
   const headers = {
-    'Authorization': `Bearer ${LLAMA_API_KEY}`,
+    'Authorization': `Bearer ${LLM_API_KEY}`,
     'Content-Type': 'application/json'
   };
   
@@ -25,14 +25,14 @@ async function testLlmConnection() {
   };
   
   // Add model if specified in environment variables
-  if (LLAMA_MODEL) {
-    data.model = LLAMA_MODEL;
+  if (LLM_MODEL) {
+    data.model = LLM_MODEL;
   }
   
   // Make the API request
   
   try {
-    const response = await fetch(LLAMA_API_URL, {
+    const response = await fetch(LLM_API_URL, {
       method: 'POST',
       headers,
       body: JSON.stringify(data)
@@ -45,7 +45,7 @@ async function testLlmConnection() {
     const responseData = await response.json();
     return { success: true, data: responseData };
   } catch (error) {
-    return { success: false, error: error.message, url: LLAMA_API_URL };
+    return { success: false, error: error.message, url: LLM_API_URL };
   }
 }
 
@@ -58,7 +58,7 @@ async function testLlmConnection() {
  */
 async function generateResponse(prompt, context = null, maxTokens = 1024) {
   const headers = {
-    'Authorization': `Bearer ${LLAMA_API_KEY}`,
+    'Authorization': `Bearer ${LLM_API_KEY}`,
     'Content-Type': 'application/json'
   };
   
@@ -87,7 +87,7 @@ async function generateResponse(prompt, context = null, maxTokens = 1024) {
   };
   
   try {
-    const response = await fetch(LLAMA_API_URL, {
+    const response = await fetch(LLM_API_URL, {
       method: 'POST',
       headers,
       body: JSON.stringify(data)

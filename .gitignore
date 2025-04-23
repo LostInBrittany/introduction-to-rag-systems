@@ -36,6 +36,9 @@ yarn-error.log*
 *.sqlite
 *.db
 
+# RAGmosnters
+data/RAGmonsters
+
 # Testing
 coverage/
 .nyc_output/

@@ -29,11 +29,11 @@ function checkPackage(packageName) {
 }
 
 /**
- * Check if the LLAMA_API_KEY is set
+ * Check if the LLM_API_KEY is set
  * @returns {boolean} Whether the API key is set
  */
 function checkApiKey() {
-  const apiKey = process.env.LLAMA_API_KEY;
+  const apiKey = process.env.LLM_API_KEY;
   return !!apiKey;
 }
 
@@ -87,7 +87,7 @@ async function main() {
   console.log('\n🔑 Checking API key:');
   const apiKeySet = checkApiKey();
   const apiStatus = apiKeySet ? '✅' : '❌';
-  console.log(`  ${apiStatus} LLAMA_API_KEY`);
+  console.log(`  ${apiStatus} LLM_API_KEY`);
   
   // Test LLM connection
   console.log('\n🤖 Testing LLM API connection:');

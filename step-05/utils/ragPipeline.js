@@ -6,7 +6,7 @@
 import { getEmbedding } from './embeddings.js';
 import { retrieveTopK } from './retrieval.js';
 import { createRagPrompt, createNoContextPrompt } from './promptBuilder.js';
-import { generateLlmResponse } from './llmConnector.js';
+import { generateLlmResponse } from './llm.js';
 
 /**
  * Process a user query through the RAG pipeline

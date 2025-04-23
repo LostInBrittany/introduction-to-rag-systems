@@ -37,7 +37,7 @@ npm install --save-dev nodemon
 Create a `.env` file to store your API keys:
 
 ```
-LLAMA_API_KEY=your_api_key_here
+LLM_API_KEY=your_api_key_here
 ```
 
 ⚠️ **Important**: Never commit your `.env` file to version control. Make sure it's included in your `.gitignore`.
