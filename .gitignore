@@ -37,7 +37,7 @@ yarn-error.log*
 *.db
 
 # RAGmosnters
-data/RAGmonsters
+RAGmonsters
 
 # Testing
 coverage/

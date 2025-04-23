@@ -20,6 +20,18 @@ This hands-on course guides you through building, deploying, and using a complet
 - **Backend**: Node.js with Express.js
 - **Deployment**: Any cloud provider (e.g., Clever Cloud) or Docker Compose
 
+### Why Use OpenAI API Compatible LLMs?
+
+There are several advantages to using OpenAI API compatible LLMs in our RAG system:
+
+1. **Standardized Interface**: The OpenAI API format has become a de facto standard, making it easy to switch between different models without changing your code.
+
+2. **Flexibility**: You can use commercial models like GPT-4, open-source models like LLaMA, or even run local models with compatible APIs.
+
+3. **Advanced Capabilities**: These models excel at understanding context and generating high-quality, coherent responses based on the provided information.
+
+4. **Customization**: Through system prompts and parameters like temperature, you can control the style and behavior of the model's responses.
+
 ## 📚 Course Content
 
 ### Foundation (Steps 1-2)
@@ -96,25 +108,14 @@ To begin the course:
 - Integrating retrieval with LLM
 - Building a functional RAG system
 
-### Advanced Features & Deployment
+### Advanced Features
 
-#### 📌 Step 6: RAG Pipeline Optimization
-- Prompt engineering techniques
-- Improving retrieval accuracy
-- Handling edge cases
-- Performance optimization
-
-#### 📌 Step 7: Advanced Retrieval Methods
-- Hybrid retrieval (vector + keyword)
-- Re-ranking strategies
-- Handling edge cases and fallbacks
-- Advanced prompt engineering
-
-#### 📌 Step 8: Deployment and Frontend
-- Deploying the Express.js backend
-- Containerization with Docker
-- Building a simple web frontend
-- End-to-end testing
+#### 📌 Step 6: RAGmonsters Integration
+- Loading and processing the RAGmonsters dataset
+- Implementing effective prompt engineering techniques
+- Optimizing context window management
+- Testing the RAG pipeline with fictional monsters
+- Building a complete RAG system with the RAGmonsters dataset
 
 ## 📋 Prerequisites
 
