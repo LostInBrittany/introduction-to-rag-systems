@@ -18,31 +18,26 @@ This hands-on course guides you through building, deploying, and using a complet
 - **Backend**: Node.js with Express.js
 - **Deployment**: Any cloud provider (e.g., Clever Cloud) or Docker Compose
 
-## 📅 Course Schedule
+## 📚 Course Content
 
-### Day 1 – From Docs to Answers
-
-**Morning**
+### Foundation (Steps 1-2)
 - 🔍 Introduction to RAG concepts
-- ⚙️ Project setup and environment configuration
-- 📄 Document ingestion from various sources
-- 🔢 Chunking strategies and embedding generation
+- ⚙️ Project setup and environment configuration (Step 1)
+- 📄 Document ingestion from various sources (Step 2)
 
-**Afternoon**
-- 🔎 Vector search implementation
-- 🤖 LLM integration with LLaMA 3
-- 🧪 Testing the basic RAG pipeline
+### Core RAG Pipeline (Steps 3-5)
+- 🔢 Chunking strategies and embedding generation (Step 3)
+- 💾 Vector database implementation (Step 4)
+- 🔎 Retrieval system development (Step 5)
+- 🤖 LLM integration (Step 5)
+- 🧪 Testing the basic RAG pipeline (Step 5)
 
-### Day 2 – Polishing and Deployment
-
-**Morning**
-- 🔧 RAG pipeline optimization
-- 📝 Prompt engineering techniques
-- 🔄 Advanced retrieval methods
-
-**Afternoon**
-- 🚀 Deployment to cloud or local environment
-- 🖥️ Building a simple frontend
+### Advanced Features & Deployment (Steps 6-8)
+- 🔧 RAG pipeline optimization (Step 6)
+- 📝 Prompt engineering techniques (Step 7)
+- 🔄 Advanced retrieval methods (Step 7)
+- 🚀 Deployment to cloud or local environment (Step 8)
+- 🖥️ Building a simple frontend (Step 8)
 - 🗣️ Final project demonstrations
 
 ## 📁 Repository Structure
@@ -54,6 +49,7 @@ This hands-on course guides you through building, deploying, and using a complet
 - **`/data`**: Sample datasets for testing
 - **`/frontend`**: Simple web interface for the RAG application
 
+
 ## 🚀 Getting Started
 
 To begin the course:
@@ -64,7 +60,7 @@ To begin the course:
 
 ## 🗺️ Learning Path
 
-### Day 1 - From Docs to Answers
+### Foundation
 
 #### 📌 Step 1: Project Setup
 - Setting up the Node.js development environment
@@ -78,6 +74,8 @@ To begin the course:
 - Document metadata handling
 - Building a document pipeline
 
+### Core RAG Pipeline
+
 #### 📌 Step 3: Chunking and Embedding
 - Text chunking strategies
 - Understanding token limits
@@ -90,30 +88,30 @@ To begin the course:
 - Storing document chunks and embeddings
 - Basic vector operations
 
-#### 📌 Step 5: Retrieval Implementation
-- Semantic search with vector similarity
-- Top-k retrieval methods
-- Filtering and metadata-based search
-- Evaluating retrieval quality
+#### 📌 Step 5: Complete RAG Pipeline
+- Basic vector similarity search (cosine)
+- Simple top-K retrieval
+- Integrating retrieval with LLM
+- Building a functional RAG system
 
-#### 📌 Step 6: LLM Integration
-- Connecting to LLaMA 3 API with Node.js
-- Building effective prompts
-- Context window management
-- Handling API responses with async/await
+### Advanced Features & Deployment
 
-### Day 2 - Polishing and Deployment
-
-#### 📌 Step 7: RAG Pipeline Optimization
+#### 📌 Step 6: RAG Pipeline Optimization
 - Prompt engineering techniques
+- Improving retrieval accuracy
+- Handling edge cases
+- Performance optimization
+
+#### 📌 Step 7: Advanced Retrieval Methods
 - Hybrid retrieval (vector + keyword)
 - Re-ranking strategies
 - Handling edge cases and fallbacks
+- Advanced prompt engineering
 
 #### 📌 Step 8: Deployment and Frontend
 - Deploying the Express.js backend
 - Containerization with Docker
-- Building a React or Vue.js frontend
+- Building a simple web frontend
 - End-to-end testing
 
 ## 📋 Prerequisites
@@ -126,4 +124,15 @@ To begin the course:
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This course is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC-BY-SA-NC 4.0).
+
+You are free to:
+- **Share** — copy and redistribute the material in any medium or format
+- **Adapt** — remix, transform, and build upon the material
+
+Under the following terms:
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- **NonCommercial** — You may not use the material for commercial purposes.
+- **ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+
+For more details: [CC-BY-SA-NC 4.0 License](https://creativecommons.org/licenses/by-nc-sa/4.0/)

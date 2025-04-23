@@ -1,0 +1,3 @@
+This is a sample text document for testing the document ingestion pipeline.
+It contains plain text that will be processed by our RAG system.
+The document ingestion pipeline should extract this text and prepare it for chunking and embedding.
